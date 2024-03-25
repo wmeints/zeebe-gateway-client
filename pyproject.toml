@@ -6,7 +6,7 @@ authors = [
     { name = "Willem Meints", email = "1550763+wmeints@users.noreply.github.com" }
 ]
 dependencies = [
-    "typer>=0.10.0",
+    "grpcio>=1.62.1",
 ]
 readme = "README.md"
 requires-python = ">= 3.8"
