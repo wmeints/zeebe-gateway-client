@@ -1,0 +1,29 @@
+[project]
+name = "zeebe-gateway-client"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "Willem Meints", email = "1550763+wmeints@users.noreply.github.com" }
+]
+dependencies = [
+    "typer>=0.10.0",
+]
+readme = "README.md"
+requires-python = ">= 3.8"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "ruff>=0.3.4",
+    "grpcio-tools>=1.62.1",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/zeebe_gateway_client"]
