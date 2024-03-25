@@ -22,14 +22,14 @@ instance information on the terminal.
 
 The task instance information provided contains the following properties:
 
-| Property        | Description                                                                                      |
-| --------------- | ------------------------------------------------------------------------------------------------ |
-| key: int        | The unique identifier of the job                                                                 |
-| task_type: str  | The type of job that was activated.                                                              |
-| task_id: str    | The identifier of the task. This is set in the ID field of the property inspector in the modeler |
-| process_id: str | The ID of the process that hosts the job                                                         |
-| retries: int    | The number of remaining retries for the job                                                      |
-| variables: dict | A dictionary containing variables provided from the workflow                                     |
+| Property   | Type | Description                                                                                      |
+| ---------- | ---- | ------------------------------------------------------------------------------------------------ |
+| key        | int  | The unique identifier of the job                                                                 |
+| task_type  | str  | The type of job that was activated.                                                              |
+| task_id    | str  | The identifier of the task. This is set in the ID field of the property inspector in the modeler |
+| process_id | str  | The ID of the process that hosts the job                                                         |
+| retries    | int  | The number of remaining retries for the job                                                      |
+| variables  | dict | A dictionary containing variables provided from the workflow                                     |
 
 You can complete jobs with the following code:
 
