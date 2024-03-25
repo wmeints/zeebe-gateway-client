@@ -1,9 +1,14 @@
-from typing import Callable
-from zeebe_gateway_client.zeebe_gateway_pb2_grpc import GatewayStub
-import zeebe_gateway_client.zeebe_gateway_pb2 as protocol
-import grpc
-from dataclasses import dataclass
 import json
+import logging
+from dataclasses import dataclass
+from typing import Callable
+
+import grpc
+
+import zeebe_gateway_client.zeebe_gateway_pb2 as protocol
+from zeebe_gateway_client.zeebe_gateway_pb2_grpc import GatewayStub
+
+_logger = logging.getLogger(__name__)
 
 
 @dataclass
@@ -42,6 +47,7 @@ class GatewayClient:
     and fail jobs.
     """
 
+    _logger: logging.Logger
     _stub: GatewayStub
     _channel: grpc.Channel
     _worker_name: str
@@ -56,7 +62,7 @@ class GatewayClient:
         self._channel = grpc.insecure_channel(f"{host}:{port}")
         self._stub = GatewayStub(self._channel)
 
-    def subscribe(self, job_type: str, callback: Callable):
+    def subscribe(self, job_type: str, timeout: int, callback: Callable):
         """
         Subscribes to a job stream for a configured job type. When a new job of the specified type is available, the
         callback function is called with the job data. The callback function should accept two arguments, the first
@@ -67,11 +73,13 @@ class GatewayClient:
         -----------
         task_type: str
             The type of task to subscribe to.
+        timeout: int
+            The number of seconds before a job can be executed again.
         callback: Callable
             The function to call when a new task of the specified type is available.
         """
         request = protocol.StreamActivatedJobsRequest(
-            type=job_type, worker=self._worker_name, timeout=300
+            type=job_type, worker=self._worker_name, timeout=timeout
         )
 
         for job_data in iter(self._stub.StreamActivatedJobs(request)):
@@ -83,6 +91,8 @@ class GatewayClient:
                 job_data.retries,
                 json.loads(job_data.variables),
             )
+
+            _logger.info("Received job: %s", task_instance)
 
             callback(self, task_instance)
 
@@ -111,6 +121,8 @@ class GatewayClient:
 
         self._stub.CompleteJob(request_data)
 
+        _logger.info("Completed job: %s", task_instance)
+
     def fail_job(
         self, task_instance: TaskInstance, error_message: str, remaining_retries: int
     ):
@@ -135,3 +147,5 @@ class GatewayClient:
         )
 
         self._stub.FailJob(request_data)
+
+        _logger.info("Failed job: %s", task_instance)
