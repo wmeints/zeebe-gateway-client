@@ -4,6 +4,11 @@ The Zeebe gateway client package provides access to the Zeebe gateway that's par
 The goal is primarily to provide access to the activated job stream so we can dispatch these as tasks in our own
 software.
 
+## System requirements
+
+- Python 3.12
+- [Rye](https://rye-up.com)
+
 ## Getting started
 
 To listen for activated jobs in Camunda you'll need the following code:
