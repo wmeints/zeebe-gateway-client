@@ -6,7 +6,7 @@ software.
 
 ## System requirements
 
-- Python 3.12
+- [Python 3.12](https://www.python.org/downloads/)
 - [Rye](https://rye-up.com)
 
 ## Getting started
